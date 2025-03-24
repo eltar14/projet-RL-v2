@@ -7,6 +7,9 @@ class SnakeEnv:
         self.width = width
         self.height = height
         self.reset()
+        self.apple_reward = 3
+        self.death_reward = -3
+        self.step_reward = 0.02
 
     def reset(self):
         """Réinitialise l'environnement et retourne l'état initial."""
@@ -36,23 +39,23 @@ class SnakeEnv:
         if new_head[0] < 0 or new_head[0] >= self.height or new_head[1] < 0 or new_head[1] >= self.width:
             self.done = True
             death_reason = "wall"
-            return self.get_state(), -5, True, {"death_reason": death_reason, "ate_apple": False}
+            return self.get_state(), self.death_reward, True, {"death_reason": death_reason, "ate_apple": False}
 
         # Collision avec soi-même
         if new_head in self.snake:
             self.done = True
             death_reason = "self"
-            return self.get_state(), -5, True, {"death_reason": death_reason, "ate_apple": False}
+            return self.get_state(), self.death_reward, True, {"death_reason": death_reason, "ate_apple": False}
 
         self.snake.insert(0, new_head)
 
         if new_head == self.food:
             ate_apple = True
             self.place_food()
-            reward = 5
+            reward = self.apple_reward
         else:
             self.snake.pop()
-            reward = 0.1
+            reward = self.step_reward
 
         return self.get_state(), reward, self.done, {
             "death_reason": death_reason,

@@ -34,7 +34,8 @@ class DQNAgent:
 
 
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
-        self.loss_fn = nn.MSELoss()
+        #self.loss_fn = nn.MSELoss()
+        self.loss_fn = nn.SmoothL1Loss() #TODO fonction de loss
 
     def init_stack(self, state):
         """Initialise la stack avec le même état n_frames fois"""
