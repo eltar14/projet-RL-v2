@@ -22,41 +22,42 @@ class SnakeEnv:
         self.food = random.choice(empty_cells)
 
     def step(self, action):
-        """Effectue un pas de simulation avec l'action donnée (0=haut, 1=droite, 2=bas, 3=gauche)."""
         if self.done:
             return self.get_state(), 0, True, {}
 
-        # Définition des directions :
         directions = {0: (-1, 0), 1: (0, 1), 2: (1, 0), 3: (0, -1)}
         self.direction = directions[action]
-
-        # Calcul de la nouvelle tête du serpent
         new_head = (self.snake[0][0] + self.direction[0], self.snake[0][1] + self.direction[1])
 
         death_reason = None
+        ate_apple = False
 
+        # Collision avec mur
         if new_head[0] < 0 or new_head[0] >= self.height or new_head[1] < 0 or new_head[1] >= self.width:
             self.done = True
             death_reason = "wall"
-            return self.get_state(), -1, True, {"death_reason": death_reason}
+            return self.get_state(), -5, True, {"death_reason": death_reason, "ate_apple": False}
 
+        # Collision avec soi-même
         if new_head in self.snake:
             self.done = True
             death_reason = "self"
-            return self.get_state(), -1, True, {"death_reason": death_reason}
+            return self.get_state(), -5, True, {"death_reason": death_reason, "ate_apple": False}
 
-        # Déplacement du serpent
         self.snake.insert(0, new_head)
-        reward = 0
 
-        # Vérification si on mange la pomme
         if new_head == self.food:
-            reward = 1
+            ate_apple = True
             self.place_food()
+            reward = 5
         else:
-            self.snake.pop()  # Sinon, on enlève la queue
+            self.snake.pop()
+            reward = 0.1
 
-        return self.get_state(), reward, self.done, {"death_reason": death_reason}
+        return self.get_state(), reward, self.done, {
+            "death_reason": death_reason,
+            "ate_apple": ate_apple
+        }
 
     def get_state(self):
         """Retourne la grille actuelle sous forme de matrice 2D."""

@@ -8,11 +8,12 @@ from DQN_model import DQN
 
 
 class DQNAgent:
-    def __init__(self, state_shape, action_size, n_frames=4, hidden_dim=128, gamma=0.99, lr=1e-3,
+    def __init__(self, state_shape, action_size, n_frames=4, hidden_dim=128, gamma=0.99, lr=1e-4,
                  epsilon_start=1.0, epsilon_end=0.1, epsilon_decay=0.999995,
                  memory_size=10000, batch_size=64):
 
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        #self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cpu")
 
         self.action_size = action_size
         self.gamma = gamma
@@ -77,6 +78,9 @@ class DQNAgent:
             next_q_values = self.model(next_states).max(1)[0].unsqueeze(1)
             target_q = rewards + (1 - dones) * self.gamma * next_q_values
 
+        q_values = torch.clamp(q_values, -1e3, 1e3)
+        target_q = torch.clamp(target_q, -1e3, 1e3)
+
         loss = self.loss_fn(q_values, target_q)
         self.optimizer.zero_grad()
         loss.backward()
@@ -86,5 +90,5 @@ class DQNAgent:
 
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
-
+        #print(len(self.memory))
         return loss.item(), avg_q

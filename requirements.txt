@@ -1,1 +1,7 @@
 numpy
+torch
+pandas
+matplotlib
+seaborn
+plotly
+dash

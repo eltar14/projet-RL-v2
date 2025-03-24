@@ -40,9 +40,12 @@ for ep in range(n_episodes):
         agent.train()
 
         stacked_state = next_stacked_state
+        #print(stacked_state.shape)
         total_reward += reward
         steps += 1
-        if reward == 1:
+        #if reward == 1:
+        #    apples += 1
+        if info.get("ate_apple", False):
             apples += 1
 
         if done:
@@ -71,4 +74,4 @@ for ep in range(n_episodes):
         avg_q=avg_q
     )
 
-    print(f"[EP {ep + 1}] Reward={total_reward:.2f}, Steps={steps}, Apples={apples}, Death={death_reason}, Epsilon={agent.epsilon:.3f}")
+    print(f"[EP {ep + 1}] Reward={total_reward:.2f}, Steps={steps}, Apples={apples}, Death={death_reason}, Epsilon={agent.epsilon:.3f}, avg_loss={avg_loss:.2f}, avg_q={avg_q:.2f}")
