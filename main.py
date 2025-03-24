@@ -1,7 +1,12 @@
 import SnakeEnv
 snake = SnakeEnv.SnakeEnv()
 
-
+MOV_DICT = {
+    "UP":0,
+    "RIGHT":1,
+    "DOWN":2,
+    "LEFT":3,
+}
 
 while True:
     snake.render()

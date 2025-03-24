@@ -33,12 +33,17 @@ class SnakeEnv:
         # Calcul de la nouvelle tête du serpent
         new_head = (self.snake[0][0] + self.direction[0], self.snake[0][1] + self.direction[1])
 
-        # Vérification des collisions (mur ou corps)
-        if (new_head[0] < 0 or new_head[0] >= self.height or
-                new_head[1] < 0 or new_head[1] >= self.width or
-                new_head in self.snake):
+        death_reason = None
+
+        if new_head[0] < 0 or new_head[0] >= self.height or new_head[1] < 0 or new_head[1] >= self.width:
             self.done = True
-            return self.get_state(), -1, True, {}  # Pénalité pour collision
+            death_reason = "wall"
+            return self.get_state(), -1, True, {"death_reason": death_reason}
+
+        if new_head in self.snake:
+            self.done = True
+            death_reason = "self"
+            return self.get_state(), -1, True, {"death_reason": death_reason}
 
         # Déplacement du serpent
         self.snake.insert(0, new_head)
@@ -51,7 +56,7 @@ class SnakeEnv:
         else:
             self.snake.pop()  # Sinon, on enlève la queue
 
-        return self.get_state(), reward, self.done, {}
+        return self.get_state(), reward, self.done, {"death_reason": death_reason}
 
     def get_state(self):
         """Retourne la grille actuelle sous forme de matrice 2D."""
