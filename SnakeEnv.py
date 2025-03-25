@@ -103,7 +103,7 @@ class SnakeEnv:
     def render(self):
         """Affiche la grille dans le terminal."""
         grid = self.get_state()
-        symbols = {0: '.', 1: 'S', 2: 'F', 3: 'X'}
+        symbols = {0: '.', 1: 'S', 2: 'F', 3: 'X', 4: 'O'}
         for row in grid:
             print(' '.join(symbols[cell] for cell in row))
         print()

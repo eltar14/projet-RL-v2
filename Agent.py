@@ -9,7 +9,7 @@ from DQN_model import DQN
 
 class DQNAgent:
     def __init__(self, state_shape, action_size, n_frames=4, hidden_dim=128, gamma=0.99, lr=1e-4,
-                 epsilon_start=1.0, epsilon_end=0.1, epsilon_decay=0.999995,
+                 epsilon_start=1.0, epsilon_end=0.0001, epsilon_decay=0.999995,
                  memory_size=10000, batch_size=64):
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
