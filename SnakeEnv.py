@@ -10,7 +10,7 @@ class SnakeEnv:
         self.apple_reward = 100
         self.death_reward = -3
         self.step_reward = 0.02
-        self.heading_reward = 0.02
+        self.heading_reward = 0.2
 
     def reset(self):
         """Réinitialise l'environnement et retourne l'état initial."""
@@ -34,7 +34,6 @@ class SnakeEnv:
         self.direction = directions[action]
         new_head = (self.snake[0][0] + self.direction[0], self.snake[0][1] + self.direction[1])
 
-        new_dist = abs(self.snake[0][0] - self.food[0]) + abs(self.snake[0][1] - self.food[1]) # distance to apple from position after movement
 
         death_reason = None
         ate_apple = False
@@ -51,8 +50,11 @@ class SnakeEnv:
             death_reason = "self"
             return self.get_state(), self.death_reward, True, {"death_reason": death_reason, "ate_apple": False}
 
-        self.snake.insert(0, new_head)
+        self.snake.insert(0, new_head) # placing the new head !! after checking this new position is possible !!
 
+        new_dist = abs(self.snake[0][0] - self.food[0]) + abs(self.snake[0][1] - self.food[1]) # distance to apple from position after movement
+
+        # === REWARDS ===
         if new_head == self.food:
             ate_apple = True
             self.place_food()
