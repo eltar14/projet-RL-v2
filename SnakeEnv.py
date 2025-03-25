@@ -71,11 +71,25 @@ class SnakeEnv:
         }
 
     def get_state(self):
-        """Retourne la grille actuelle sous forme de matrice 2D."""
-        grid = np.zeros((self.height, self.width), dtype=int)
+        """
+        Retourne la grille avec bordures, sous forme de matrice 2D.
+        0 = fond, 1 = serpent, 2 = pomme, 3 = mur
+        """
+        grid = np.zeros((self.height + 2, self.width + 2), dtype=int)
+
+        # murs tout autour
+        grid[0, :] = 3  # haut
+        grid[-1, :] = 3  # bas
+        grid[:, 0] = 3  # gauche
+        grid[:, -1] = 3  # droite
+
+        # placer le serpent (+1 à chaque coordonnée à cause des murs)
         for y, x in self.snake:
-            grid[y, x] = 1
-        grid[self.food[0], self.food[1]] = 2
+            grid[y + 1, x + 1] = 1
+
+        # placer la pomme
+        grid[self.food[0] + 1, self.food[1] + 1] = 2
+
         return grid
 
     def render(self):
