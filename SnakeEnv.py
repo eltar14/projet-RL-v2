@@ -7,7 +7,7 @@ class SnakeEnv:
         self.width = width
         self.height = height
         self.reset()
-        self.apple_reward = 3
+        self.apple_reward = 100
         self.death_reward = -3
         self.step_reward = 0.02
 

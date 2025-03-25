@@ -79,8 +79,9 @@ class DQNAgent:
             next_q_values = self.model(next_states).max(1)[0].unsqueeze(1)
             target_q = rewards + (1 - dones) * self.gamma * next_q_values
 
-        q_values = torch.clamp(q_values, -1e3, 1e3)
-        target_q = torch.clamp(target_q, -1e3, 1e3)
+        #q_values = torch.clamp(q_values, -1e3, 1e3)
+        #target_q = torch.clamp(target_q, -1e3, 1e3)
+        assert q_values.abs().max().item() < 1e4, "Q-values are exploding!"
 
         loss = self.loss_fn(q_values, target_q)
         self.optimizer.zero_grad()
