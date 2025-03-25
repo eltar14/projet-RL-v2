@@ -83,8 +83,16 @@ class SnakeEnv:
         grid[:, 0] = 3  # gauche
         grid[:, -1] = 3  # droite
 
-        # placer le serpent (+1 à chaque coordonnée à cause des murs)
-        for y, x in self.snake:
+        ## placer le serpent (+1 à chaque coordonnée à cause des murs)
+        #for y, x in self.snake:
+        #    grid[y + 1, x + 1] = 1
+
+        # placer la tête (valeur spéciale)
+        head_y, head_x = self.snake[0]
+        grid[head_y + 1, head_x + 1] = 4
+
+        # placer le reste du corps
+        for y, x in self.snake[1:]:
             grid[y + 1, x + 1] = 1
 
         # placer la pomme
@@ -95,7 +103,7 @@ class SnakeEnv:
     def render(self):
         """Affiche la grille dans le terminal."""
         grid = self.get_state()
-        symbols = {0: '.', 1: 'S', 2: 'F'}
+        symbols = {0: '.', 1: 'S', 2: 'F', 3: 'X'}
         for row in grid:
             print(' '.join(symbols[cell] for cell in row))
         print()
