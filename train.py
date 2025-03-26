@@ -12,7 +12,7 @@ state = env.reset()
 dummy_stack = np.stack([state for _ in range(4)], axis=0)  # simulate la stack
 agent = DQNAgent(state_shape=dummy_stack.shape, action_size=4)
 
-n_episodes = 30000
+n_episodes = 300000
 
 logger = TrainingLogger()
 
@@ -79,11 +79,11 @@ for ep in range(n_episodes):
 
     print(f"[EP {ep + 1}] Reward={total_reward:.2f}, Steps={steps}, Apples={apples}, Death={death_reason}, Epsilon={agent.epsilon:.3f}, avg_loss={avg_loss:.2f}, avg_q={avg_q:.2f}")
 
-    if (ep + 1) % 4000 == 0:
+    if (ep + 1) % 1000 == 0:
         torch.save({
             'episode': ep,
             'model_state_dict': agent.model.state_dict(),
             'optimizer_state_dict': agent.optimizer.state_dict(),
             'epsilon': agent.epsilon,
             'replay_buffer': list(agent.memory),  # attention à la taille
-        }, "models/checkpoint.pth")
+        }, "models/checkpoint2.pth")
