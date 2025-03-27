@@ -16,7 +16,7 @@ def demo_pygame():
     from pygame_display import run_pygame_visual
 
     model_path = "models/checkpoint - Copie (5).pth"  # update this path if needed
-    run_pygame_visual(model_path, fps=5, width=10, height=10)
+    run_pygame_visual(model_path, fps=5, width=10, height=10, record_gif=True)
 
 
 if __name__ == "__main__":
