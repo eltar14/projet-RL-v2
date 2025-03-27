@@ -6,6 +6,7 @@ import numpy as np
 import os
 os.makedirs("models", exist_ok=True)
 import torch
+from utils import save_checkpoint
 
 env = SnakeEnv(width=10, height=10)
 state = env.reset()
@@ -79,11 +80,10 @@ for ep in range(n_episodes):
 
     print(f"[EP {ep + 1}] Reward={total_reward:.2f}, Steps={steps}, Apples={apples}, Death={death_reason}, Epsilon={agent.epsilon:.3f}, avg_loss={avg_loss:.2f}, avg_q={avg_q:.2f}")
 
-    if (ep + 1) % 4000 == 0:
-        torch.save({
-            'episode': ep,
-            'model_state_dict': agent.model.state_dict(),
-            'optimizer_state_dict': agent.optimizer.state_dict(),
-            'epsilon': agent.epsilon,
-            'replay_buffer': list(agent.memory),  # attention à la taille
-        }, "models/checkpoint.pth")
+    if (ep + 1) % 1000 == 0:
+        save_checkpoint("models/checkpoint2.pth",
+                        model=agent.model,
+                        optimizer=agent.optimizer,
+                        epsilon=agent.epsilon,
+                        memory=agent.memory,
+                        episode=ep)
