@@ -7,7 +7,7 @@ import os
 
 # --- Chargement du dernier fichier de log ---
 log_dir = "logs"
-log_files = sorted([f for f in os.listdir(log_dir) if f.startswith("snake_dqn_log_")])
+log_files = sorted([f for f in os.listdir(log_dir) if f.startswith("snake_dqn_log_20250326_113131_good_one.csv")])
 latest_log = os.path.join(log_dir, log_files[-1])
 df = pd.read_csv(latest_log)
 
