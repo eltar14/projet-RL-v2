@@ -90,7 +90,7 @@ def run_pygame_visual(model_path, fps=5, width=10, height=10, record_gif=False):
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             score_str = str(apples).zfill(3)  # fixed length score
             gif_path = f"outputs/{score_str}_snake_{timestamp}.gif"
-            imageio.mimsave(gif_path, frames, fps=fps)
+            imageio.mimsave(gif_path, frames, fps=fps, loop=0)
             print(f"saved gif: {gif_path}")
 
         time.sleep(1.0)

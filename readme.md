@@ -2,8 +2,8 @@
 
 Reinforcement learning agent trained to play a custom snake game, using **CNN** and **DQN**.  
 
-![snake gif example](outputs/033_snake_20250326_215648.gif)
-![snake gif example](outputs/027_snake_20250326_215410.gif)  
+![snake gif example](outputs/033_snake_20250326_215648_v2.gif)
+![snake gif example](outputs/027_snake_20250326_215410_v2.gif)  
 *Scores : 33 and 27 respectively*  
 
 ## Why this project
