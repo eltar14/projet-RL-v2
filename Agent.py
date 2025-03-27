@@ -36,22 +36,29 @@ class DQNAgent:
 
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
         #self.loss_fn = nn.MSELoss()
-        self.loss_fn = nn.SmoothL1Loss() #TODO fonction de loss
+        self.loss_fn = nn.SmoothL1Loss() # more stable than MSE, better results by far (no exploding valures)
 
     def init_stack(self, state):
-        """Initialise la stack avec le même état n_frames fois"""
+        """
+        Initializes the stack with the same image n times
+        """
         for _ in range(self.n_frames):
             self.state_stack.append(state)
 
     def update_stack(self, new_state):
-        """Ajoute une nouvelle frame à la stack"""
+        """adds a new frame to the stack"""
         self.state_stack.append(new_state)
 
     def get_stacked_state(self):
-        """Retourne la stack comme un np.array (n_frames, H, W)"""
+        """
+        Returns the stack as an np.array (n_frames, H, W)
+        """
         return np.stack(self.state_stack, axis=0)
 
     def get_action(self, stacked_state):
+        """
+        Returns the action predicted based on the stacked frames
+        """
         if np.random.rand() < self.epsilon:
             return random.randint(0, self.action_size - 1)
         state_tensor = torch.FloatTensor(stacked_state).unsqueeze(0).to(self.device)
