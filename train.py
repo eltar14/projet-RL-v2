@@ -13,7 +13,7 @@ state = env.reset()
 dummy_stack = np.stack([state for _ in range(4)], axis=0)  # simulate la stack
 agent = DQNAgent(state_shape=dummy_stack.shape, action_size=4)
 
-n_episodes = 30000
+n_episodes = 300000
 
 logger = TrainingLogger()
 
