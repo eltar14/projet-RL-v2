@@ -104,3 +104,42 @@ def run_simple_visual_test(model_path, fps=3):
 
         print("\nrun ended. restarting in 1 second...\n")
         time.sleep(1)  # short pause before restarting
+
+def extract_model_weights(pth_input_path, pth_output_path):
+    """
+    loads a .pth checkpoint and extracts only the model's state_dict.
+    saves it as a lighter .pth file. for a demo maybe
+
+    works with:
+    - full checkpoints (dict with 'model_state_dict')
+    - raw state_dicts
+
+    raises:
+    - FileNotFoundError if input file does not exist
+    - ValueError if file content is not loadable
+    - RuntimeError if 'model_state_dict' key is missing
+    """
+
+    if not os.path.isfile(pth_input_path):
+        raise FileNotFoundError(f"file not found: {pth_input_path}")
+
+    try:
+        checkpoint = torch.load(pth_input_path, map_location="cpu", weights_only=False)
+    except Exception as e:
+        raise ValueError(f"failed to load .pth file: {e}")
+
+    # case 1: full checkpoint with 'model_state_dict'
+    if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
+        model_state = checkpoint['model_state_dict']
+    # case 2: raw state_dict
+    elif isinstance(checkpoint, dict) and all(isinstance(k, str) for k in checkpoint.keys()):
+        print("input is already a raw state_dict, skipping copy")
+        return
+    else:
+        raise RuntimeError("unexpected .pth format: cannot extract model weights")
+
+    try:
+        torch.save(model_state, pth_output_path)
+        print(f"extracted model weights saved to: {pth_output_path}")
+    except Exception as e:
+        raise RuntimeError(f"failed to save extracted model weights: {e}")
