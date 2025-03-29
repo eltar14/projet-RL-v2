@@ -70,7 +70,7 @@ or call directly:
 
 ```python
 from pygame_display import run_pygame_visual
-run_pygame_visual("models/model_name.pth", fps=5)
+run_pygame_visual("models/demo_model.pth", fps=5)
 ```
 
 ## Dependencies
